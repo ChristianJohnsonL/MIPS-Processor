@@ -3,158 +3,8 @@
 #include <string.h>
 #include <vector>
 #include <cmath>
+#include "functions.h"
 using namespace std;
-
-int memSize(ifstream& f, vector<string>& data)
-{
-    string line;
-    int size = 0;
-    while (getline(f, line))
-    {
-        data.push_back(line);
-        size++;
-    }
-
-    f.clear();
-    f.seekg(0);
-    return size;
-}
-
-void print(ifstream& f, vector<string>& data, int size)
-{
-    string line;
-    while (getline(f, line))
-    {
-        cout << line << endl;
-    }
-
-    f.clear();
-    f.seekg(0);
-}
-
-int hexCharToValue(char c)
-{
-    if (c >= '0' && c <= '9') return c - '0';
-    c = std::toupper(static_cast<unsigned char>(c));
-    if (c >= 'A' && c <= 'F') return 10 + (c - 'A');
-    return -1;
-}
-
-bool isHex(const std::string& s)
-{
-    if (s.empty()) return false;
-    for (char c : s)
-    {
-        if (hexCharToValue(c) == -1) return false;
-    }
-    return true;
-}
-
-
-std::string stripLeadingZeros(const std::string& s)
-{
-    std::size_t i = 0;
-    while (i < s.size() && s[i] == '0') ++i;
-    if (i == s.size()) return "0";
-    return s.substr(i);
-}
-
-std::string hexToBinary(const std::string& hex)
-{
-    static const std::string lookup[16] = {
-        "0000","0001","0010","0011",
-        "0100","0101","0110","0111",
-        "1000","1001","1010","1011",
-        "1100","1101","1110","1111"
-    };
-
-    std::string result;
-    for (char c : hex)
-    {
-        int val = hexCharToValue(c);
-        result += lookup[val];
-    }
-    return result;
-}
-
-
-void mipsProcessor(string instruction)
-{
-   
-    int index = 0;
-    bool rFormat = true;
-    std::string binary;
-    int registers[6];
-    binary = hexToBinary(instruction);
-    int result = 0;
-    cout << binary << endl;
-
-    for (int i = 0; i < 6; i++)
-    {
-        if (binary[i] != '0')
-        {
-            rFormat = false;
-            cout << "I format";
-            break;
-        }
-    }
-
-
-    if (rFormat)
-    {
-        result = 0;
-        for (int i = 0; i < 6; i++)
-        {
-            if(binary[i] == '1')
-            {
-                int bitPos = 5 - i;
-                result += (1 << bitPos);
-            }
-        }
-        registers[0] = result;           
-        cout << registers[0] << endl;
-
-        index = 6;                       
-        result = 0;
-
-
-        for (int i = 1; i < 5; i++)
-        {
-            result = 0;
-            for (int j = index; j < index + 5; j++)
-            {
-                if (binary[j] == '1')
-                {
-                    int bitPos = (index + 4) - j;
-                    result += (1 << bitPos);
-                }
-            }
-            registers[i] = result;
-            cout << registers[i] << endl;
-            index+=5;
-        }
-
-        result = 0;
-
-        for (int i = index; i < index + 6; i++)
-        {
-            if (binary[i] == '1')
-            {
-                int bitPos = (index + 5) - i;
-                result += (1 << bitPos);
-            }
-        }
-        registers[5] = result;
-        result = 0;
-        cout << registers[5] << endl;
-    }
-    else
-    {
-
-    }
-
-
-}
 
 
 int main()
@@ -177,9 +27,12 @@ int main()
         file.close();
     }
 
+    int size = memSize(f, data);
+
 
     while(running)
     {
+        int changed = size + 1;
         cout << "What do you want to do? \nEnter 1 to enter an instruction. \nEnter 2 to print memory.\nPlease enter something: ";
         cin >> selection;
 
@@ -188,11 +41,11 @@ int main()
             case 1:
             cout<<"Enter an instruction: ";
             cin >> instruction;
-            mipsProcessor(instruction);
+            mipsProcessor(instruction, f, size);
             break;
 
             case 2: 
-            print(f, data, memSize(f, data));
+            print(f, data, memSize(f, data), changed);
             break;
 
             default:
