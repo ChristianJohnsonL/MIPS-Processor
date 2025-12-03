@@ -74,58 +74,79 @@ std::string hexToBinary(const std::string& hex)
         int val = hexCharToValue(c);
         result += lookup[val];
     }
-    return stripLeadingZeros(result);
+    return result;
 }
 
 
 void mipsProcessor(string instruction)
 {
+   
     int index = 0;
-    bool rFormat;
+    bool rFormat = true;
     std::string binary;
-    int registers[4];
+    int registers[6];
     binary = hexToBinary(instruction);
-    int result;
+    int result = 0;
+    cout << binary << endl;
 
     for (int i = 0; i < 6; i++)
     {
-        if (binary[i] != 0)
+        if (binary[i] != '0')
         {
             rFormat = false;
+            cout << "I format";
+            break;
         }
     }
 
 
     if (rFormat)
     {
-        for (int i = 5; i >= 0; i--)
+        result = 0;
+        for (int i = 0; i < 6; i++)
         {
-            if(binary[i] == 1)
+            if(binary[i] == '1')
             {
-                result += pow(2, abs(i - 5));
+                int bitPos = 5 - i;
+                result += (1 << bitPos);
             }
         }
-        registers[0] = result;
-        index+=6;
+        registers[0] = result;           
+        cout << registers[0] << endl;
+
+        index = 6;                       
         result = 0;
 
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 1; i < 5; i++)
         {
-            for (int i = index + 5; i > index; i--)
+            result = 0;
+            for (int j = index; j < index + 5; j++)
             {
-                
+                if (binary[j] == '1')
+                {
+                    int bitPos = (index + 4) - j;
+                    result += (1 << bitPos);
+                }
             }
             registers[i] = result;
+            cout << registers[i] << endl;
             index+=5;
-            result = 0;
         }
+
+        result = 0;
+
         for (int i = index; i < index + 6; i++)
         {
-
+            if (binary[i] == '1')
+            {
+                int bitPos = (index + 5) - i;
+                result += (1 << bitPos);
+            }
         }
-
-
+        registers[5] = result;
+        result = 0;
+        cout << registers[5] << endl;
     }
     else
     {
