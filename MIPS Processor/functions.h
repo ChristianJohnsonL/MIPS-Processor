@@ -29,9 +29,10 @@ void Addi(int registers[6], ifstream& f, int size);
 void Or(int registers[6], ifstream& f, int size);
 
 void Xor(int registers[6], ifstream& f, int size);
-//== Amari Stop
 
 void Lw(int registers[6], ifstream& f, int size);
+
+//== Amari Stop
 
 void Sw(int registers[6], ifstream& f, int size);
 

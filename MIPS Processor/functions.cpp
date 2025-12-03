@@ -121,7 +121,6 @@ void Xor(int registers[6], ifstream& f, int size )
     print(f, size, changed);
 }
 
-//== Amari Stop
 
 void Lw(int registers[6], ifstream& f, int size )
 {
@@ -129,6 +128,8 @@ void Lw(int registers[6], ifstream& f, int size )
 
     print(f, size, changed);
 }
+
+//== Amari Stop
 
 void Sw(int registers[6], ifstream& f, int size )
 {
