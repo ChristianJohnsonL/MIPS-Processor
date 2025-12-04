@@ -81,76 +81,132 @@ std::string hexToBinary(const std::string& hex)
 //== Amari Start
 void Add(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int rt = registers[2];
+    int rd = registers[3];
+    int result = rs + rt;
     int changed = 0;
+
+    std::cout << "ADD rs=" << rs << " rt=" << rt << " rd=" << rd << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-void Sub(int registers[6], ifstream& f, int size )
+void Sub(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int rt = registers[2];
+    int rd = registers[3];
+    int result = rs - rt;
     int changed = 0;
+
+    std::cout << "SUB rs=" << rs << " rt=" << rt << " rd=" << rd << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-void And(int registers[6], ifstream& f, int size )
+void And(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int rt = registers[2];
+    int rd = registers[3];
+    int result = rs & rt;
     int changed = 0;
+
+    std::cout << "AND rs=" << rs << " rt=" << rt << " rd=" << rd << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-void Addi(int registers[6], ifstream& f, int size )
+void Addi(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int imm = registers[4];
+    int rt = registers[2];
+    int result = rs + imm;
     int changed = 0;
+
+    std::cout << "ADDI rs=" << rs << " imm=" << imm << " rt=" << rt << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-void Or(int registers[6], ifstream& f, int size )
+void Or(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int rt = registers[2];
+    int rd = registers[3];
+    int result = rs | rt;
     int changed = 0;
+
+    std::cout << "OR rs=" << rs << " rt=" << rt << " rd=" << rd << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-void Xor(int registers[6], ifstream& f, int size )
+void Xor(int registers[6], ifstream& f, int size)
 {
+    int rs = registers[1];
+    int rt = registers[2];
+    int rd = registers[3];
+    int result = rs ^ rt;
     int changed = 0;
+
+    std::cout << "XOR rs=" << rs << " rt=" << rt << " rd=" << rd << " result=" << result << std::endl;
 
     print(f, size, changed);
 }
 
-
-void Lw(int registers[6], ifstream& f, int size )
+void Lw(int registers[6], ifstream& f, int size)
 {
+    int base = registers[1];
+    int offset = registers[4];
+    int rt = registers[2];
+    int address = base + offset;
     int changed = 0;
+
+    std::cout << "LW base=" << base << " offset=" << offset << " rt=" << rt << " address=" << address << std::endl;
 
     print(f, size, changed);
 }
 
+void Sw(int registers[6], ifstream& f, int size)
+{
+    int base = registers[1];
+    int rt = registers[2];
+    int offset = registers[4];
+    int address = base + offset;
+    int changed = 0;
+
+    std::cout << "SW base=" << base << " offset=" << offset << " rt=" << rt << " address=" << address << std::endl;
+
+    print(f, size, changed);
+}
+
+void Beq(int registers[6], ifstream& f, int size)
+{
+    int rs = registers[1];
+    int rt = registers[2];
+    int offset = registers[4];
+    int changed = 0;
+
+    std::cout << "BEQ rs=" << rs << " rt=" << rt << " offset=" << offset << std::endl;
+
+    print(f, size, changed);
+}
+
+void Bne(int registers[6], ifstream& f, int size)
+{
+    int rs = registers[1];
+    int rt = registers[2];
+    int offset = registers[4];
+    int changed = 0;
+
+    std::cout << "BNE rs=" << rs << " rt=" << rt << " offset=" << offset << std::endl;
+
+    print(f, size, changed);
+}
 //== Amari Stop
-
-void Sw(int registers[6], ifstream& f, int size )
-{
-    int changed = 0;
-
-    print(f, size, changed);
-}
-
-void Beq(int registers[6], ifstream& f, int size )
-{
-    int changed = 0;
-
-    print(f, size, changed);
-}
-
-void Bne(int registers[6], ifstream& f, int size )
-{
-    int changed = 0;
-
-    print(f, size, changed);
-}
 
 
 void mipsProcessor(string instruction, ifstream& f, int size)
