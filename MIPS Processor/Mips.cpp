@@ -144,21 +144,38 @@ int main()
 
     ifstream f("Memory.h");
     vector<string> data;
+    vector<string> memory;
 
     if (!f)
     {
         std::ofstream file("Memory.h");
-        data = {"012A", "012A", "A3F2", "7B19", "C0DE", "491E", "0F72", "9A44", "55EE", "D137", "6C80", "02FA", "FE21", "3D9B", "B4C7", "88F0", "1745", "E2AB", "4096", "F7CD"};
-        for (int i = 0; i < 20; i++)
+        data = {"0000", "0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "000A", "000B", "000C", "000D", "000E", "000F"};
+        memory = {"0000", "0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "000A", "000B", "000C", "000D", "000E", "000F"};
+        for (int i = 0; i < 16; i++)
         {
             file << data[i] << "\n";
         }
+
+        file << "\n";
+
+        for (int i = 0; i < 16; i++)
+        {
+            file << memory[i] << "\n";
+        }
         file.close();
+
+        // Reopen the freshly created memory file so subsequent reads succeed
+        f.clear();
+        f.open("Memory.h");
     }
 
 
     while(running)
     {
+<<<<<<< Updated upstream
+=======
+        int changed = -1;
+>>>>>>> Stashed changes
         cout << "What do you want to do? \nEnter 1 to enter an instruction. \nEnter 2 to print memory.\nPlease enter something: ";
         cin >> selection;
 
@@ -167,11 +184,19 @@ int main()
             case 1:
             cout<<"Enter an instruction: ";
             cin >> instruction;
+<<<<<<< Updated upstream
             mipsProcessor(instruction);
             break;
 
             case 2: 
             print(f, data, memSize(f, data));
+=======
+            mipsProcessor(instruction, f, size, data, memory);
+            break;
+
+            case 2: 
+            print(f, data, memory, memSize(f, data), changed);
+>>>>>>> Stashed changes
             break;
 
             default:
